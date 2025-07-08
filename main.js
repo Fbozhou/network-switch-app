@@ -3,7 +3,7 @@
  * @Author: FBZ
  * @Date: 2025-07-07 15:32:43
  * @LastEditors: FBZ
- * @LastEditTime: 2025-07-08 10:53:18
+ * @LastEditTime: 2025-07-08 17:00:47
  */
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
@@ -59,25 +59,27 @@ app.whenReady().then(() => {
   createWindow()
 })
 
+const getAdapterStatus = (name) =>
+  new Promise((resolve) => {
+    exec(
+      `powershell -Command "(Get-NetAdapter -Name \\"${name}\\" -ErrorAction SilentlyContinue).Status"`,
+      (err, stdout) => {
+        const status = stdout.trim()
+        resolve(status === 'Up' ? 'Up' : 'Down')
+      }
+    )
+  })
+const isAdapterUp = async (name) => (await getAdapterStatus(name)) === 'Up'
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
 // 网卡状态检查
 ipcMain.handle('get-status', async () => {
-  const check = (name) =>
-    new Promise((resolve) => {
-      exec(`netsh interface show interface name="${name}"`, (err, stdout) => {
-        resolve(
-          stdout.includes('已连接') || stdout.includes('Enabled')
-            ? 'Up'
-            : 'Down'
-        )
-      })
-    })
   const [intraStatus, interStatus] = await Promise.all([
-    check(config.intranetAdapter),
-    check(config.internetAdapter),
+    getAdapterStatus(config.intranetAdapter),
+    getAdapterStatus(config.internetAdapter),
   ])
 
   if (intraStatus === 'Up' && interStatus === 'Up') {
@@ -101,15 +103,8 @@ ipcMain.handle('toggle-mode', async () => {
       )
     )
 
-  const check = (name) =>
-    new Promise((resolve) => {
-      exec(`netsh interface show interface name="${name}"`, (err, stdout) => {
-        resolve(stdout.includes('已连接') || stdout.includes('Enabled'))
-      })
-    })
-
-  const intraUp = await check(config.intranetAdapter)
-  const interUp = await check(config.internetAdapter)
+  const intraUp = await isAdapterUp(config.intranetAdapter)
+  const interUp = await isAdapterUp(config.internetAdapter)
 
   if (intraUp && !interUp) {
     await run(

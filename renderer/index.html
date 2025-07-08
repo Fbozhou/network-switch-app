@@ -1,0 +1,39 @@
+<!-- renderer/index.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>网卡状态浮窗</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="widget" id="drag">
+      <div class="status-line">
+        <div class="icon-label">
+          <div class="icon ethernet"></div>
+          <div class="text">内网</div>
+        </div>
+        <div class="state">
+          <div class="dot" id="intranetDot"></div>
+          <span id="intranetState">--</span>
+        </div>
+      </div>
+      <div class="status-line">
+        <div class="icon-label">
+          <div class="icon wifi"></div>
+          <div class="text">外网</div>
+        </div>
+        <div class="state">
+          <div class="dot" id="internetDot"></div>
+          <span id="internetState">--</span>
+        </div>
+      </div>
+      <div class="btn-area">
+        <button id="toggleMode">切换网络</button>
+        <button id="togglePin">取消置顶</button>
+      </div>
+    </div>
+    <script src="renderer.js"></script>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+/* renderer/style.css */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: transparent;
+  -webkit-user-select: none;
+}
+
+.widget {
+  width: 240px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  -webkit-app-region: drag;
+}
+
+.status-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.icon-label {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.icon.ethernet {
+  background-image: url('./intranet.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.icon.wifi {
+  background-image: url('./internet.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.text {
+  font-weight: bold;
+  color: #333;
+}
+
+.state {
+  display: flex;
+  align-items: center;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: gray;
+  margin-right: 6px;
+}
+
+#intranetState.enabled {
+  color: #23b04b;
+}
+
+#internetState.enabled {
+  color: #23b04b;
+}
+
+#intranetDot.enabled {
+  background: #23b04b;
+}
+
+#internetDot.enabled {
+  background: #23b04b;
+}
+
+.btn-area {
+  margin-top: 12px;
+  text-align: center;
+  -webkit-app-region: no-drag;
+}
+
+button {
+  padding: 8px 14px;
+  font-size: 14px;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #005ea3;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
